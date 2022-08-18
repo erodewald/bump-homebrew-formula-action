@@ -11,7 +11,7 @@ function tarballForRelease(
   repo: string,
   tagName: string
 ): string {
-  return `https://github.com/${owner}/${repo}/archive/${tagName}.tar.gz`
+  return `${process.env.GITHUB_SERVER_URL}/${owner}/${repo}/archive/${tagName}.tar.gz`
 }
 
 export function commitForRelease(

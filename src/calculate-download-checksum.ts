@@ -15,7 +15,7 @@ function stream(
   cb: (chunk: Buffer) => void
 ): Promise<void> {
   return new Promise((resolve, reject): void => {
-    ;(url.protocol == 'https:' ? HTTPS : HTTP)(url, { headers }, (res) => {
+    ; (url.protocol == 'https:' ? HTTPS : HTTP)(url, { headers }, (res) => {
       if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400) {
         const loc = res.headers['location']
         if (loc == null) throw `HTTP ${res.statusCode} but no Location header`
@@ -33,7 +33,7 @@ function stream(
 }
 
 async function resolveDownload(apiClient: API, url: URL): Promise<URL> {
-  if (url.hostname == 'github.com') {
+  if (url.hostname.match('github')) {
     const api = apiClient.rest
     const archive = parseArchiveUrl(url)
     if (archive != null) {
@@ -41,13 +41,13 @@ async function resolveDownload(apiClient: API, url: URL): Promise<URL> {
       const res = await (archive.ext == '.zip'
         ? api.repos.downloadZipballArchive
         : api.repos.downloadTarballArchive)({
-        owner,
-        repo,
-        ref,
-        request: {
-          redirect: 'manual',
-        },
-      })
+          owner,
+          repo,
+          ref,
+          request: {
+            redirect: 'manual',
+          },
+        })
       const loc = res.headers['location'] as string
       // HACK: removing "legacy" from the codeload URL ensures that we get the
       // same archive file as web download. Otherwise, the downloaded archive

@@ -5,7 +5,7 @@ import { requestLog } from '@octokit/plugin-request-log'
 import { Response } from 'node-fetch'
 
 const GitHub = Octokit.plugin(restEndpointMethods, requestLog).defaults({
-  baseUrl: 'https://api.github.com',
+  baseUrl: process.env.GITHUB_API_URL || 'https://api.github.com',
 })
 
 export type API = InstanceType<typeof GitHub>
